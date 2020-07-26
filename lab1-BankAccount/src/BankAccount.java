@@ -17,23 +17,22 @@ public class BankAccount {// class Name
 	int num ,accNum;
 	int max = 0, min = 0 ;
 	String name;
-	String[] transaction = {"D","D","D","D","D"};
-	
-	
-	
+	static String[] transaction = {"DDDWWD","DDWDDDDD","DDWWWWWDDDDWDD","DDWWWWWWWWD","DDDDDDWW"};	
+
 	
 	//Constructor
 	public BankAccount(String[] accountName) {
 		//for(int i = 0 ; i < 5 ; i++)
 		//	balance[i] = monney ;
 		for(int i = 1 ; i > 0 ; i++) {
+			System.out.println("---------------------Select--Account-------------------------");
 			System.out.println("Enter 0 to Exit");
 			Scanner keyboard = new Scanner(System.in);
 			System.out.print("Enter Account 1-5 : ");
 			int login = keyboard.nextInt();
 			if(login == 0 ) {
 				System.out.println("---------------------Exit-------------------------\n");
-				System.exit(0); 
+				break;
 				}
 			accNum = login-1;
 			num = accountNumber[accNum];
@@ -41,10 +40,11 @@ public class BankAccount {// class Name
 			System.out.println("Hello "+accountName[accNum]);
 			for(int j = 1 ; j > 0 ; j++) {
 				Scanner keyboard1 = new Scanner(System.in);
+				System.out.println("---------------------Select--Menu-------------------------");
 				System.out.print("Enter Menu [1]:Show Balance [2]:Deposit [3]:Withdraw [0:Exit]  : ");
 				int menu = keyboard1.nextInt();
 				if(menu == 0) {
-					System.out.println("---------------------back-------------------------\n");
+					System.out.println("\n\n\n---------------------back-------------------------");
 					break;
 					}
 				switch (menu) {
@@ -69,8 +69,9 @@ public class BankAccount {// class Name
 					min = j;
 				}
 			}
-			System.out.println("The person with highest account balance is "+accountName[max]+"($"+balance[max]+")"+"\n");
+			System.out.println("The person with highest account balance is "+accountName[max]+"($"+balance[max]+")");
 			System.out.println("The person with lowest account balance is "+accountName[min]+"($"+balance[min]+")"+"\n");
+			
 		}		
 	}
 	
@@ -98,7 +99,7 @@ public class BankAccount {// class Name
 		Scanner keyboard1 = new Scanner(System.in);
 		System.out.print("How Much Withdraw : ");
 		double monney = keyboard1.nextInt();
-		if(monney < showBalance(num)) {
+		if(monney <= showBalance(num)) {
 			balance[num] = balance[num] - monney;
 			System.out.println("Withdraw Successful!");
 			System.out.println("Transaction : "+addTransaction(num,"W"));
@@ -117,12 +118,44 @@ public class BankAccount {// class Name
 		return transaction[num];
 	}
 	
+
 	
 	
 	
 	//main
 	public static void main(String[] args) {
 		String[] accountName = {"Mr.A","Mr.B","Mr.C","Mr.D","Mr.E"};
+		char state = '0';
+		char[] total_type = new char[5];
+		int[] total_tran = new int[5];
+		int temp;
 		new BankAccount(accountName);
+		System.out.println("ToTal of Most Transaction per Person : ");
+		for(int i = 0 ; i < 5 ; i++) {
+			temp = 0;
+			for(int j = 0 ; j < transaction[i].length();j++) {
+				if (state == transaction[i].charAt(j)){
+					temp++;
+					if (temp>=total_tran[i]){
+						total_tran[i]=temp;
+						total_type[i]=state;
+					}
+				}else{
+					temp=1;
+					state=transaction[i].charAt(j);
+					if (temp >= total_tran[i]){
+						total_tran[i]=temp;
+						total_type[i]=state;
+					}
+				}
+			}
+			System.out.print(accountName[i]+" Long repeating Activity : ");
+			if(total_type[i] == 'D') {
+				System.out.print("Deprosit ("+total_tran[i]+" Times)\n");
+			}else {
+				System.out.print("Withdraw ("+total_tran[i]+" Times)\n");
+			}
 		}
+		System.exit(0); 
+	}
 }
